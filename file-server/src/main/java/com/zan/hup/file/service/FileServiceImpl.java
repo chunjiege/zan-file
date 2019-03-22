@@ -74,7 +74,6 @@ public class FileServiceImpl implements FileService {
         file.setLength(gridFSFile.getLength());
         file.setChunkSize(gridFSFile.getChunkSize());
         file.setUploadDate(gridFSFile.getUploadDate());
-        file.setMd5(gridFSFile.getMD5());
         file.setContent(arrayInputStream);
         return file;
     }

@@ -16,10 +16,18 @@ public class FileDto {
      * 文件类型
      */
     private String contentType;
+    /**
+     * The length, in bytes of this file
+     */
     private Long length;
+    /**
+     * The size, in bytes, of each data chunk of this file
+     */
     private Integer chunkSize;
+    /**
+     * The date and time this file was added to GridFS
+     */
     private Date uploadDate;
-    private String md5;
     /**
      * 文件内容
      */
