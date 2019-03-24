@@ -1,4 +1,4 @@
-package com.zan.hup.model;
+package com.zan.hup.file.dto;
 
 import lombok.Data;
 

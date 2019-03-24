@@ -5,3 +5,5 @@ spring:
     mongodb:
       host:
       uri: mongodb://118.31.20.148:27017/storage
+mybatis:
+  mapper-locations: classpath:mapper/*.xml

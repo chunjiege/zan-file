@@ -3,8 +3,9 @@ package com.zan.hup.file.service;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import com.zan.hup.file.FileService;
+import com.zan.hup.file.async.AsyncTask;
+import com.zan.hup.file.dto.FileDto;
 import com.zan.hup.file.repository.FileRepository;
-import com.zan.hup.model.FileDto;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -21,8 +22,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -36,23 +37,27 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileRepository fileRepository;
 
+    @Autowired
+    private AsyncTask asyncTask;
+
     public String singleFileUpload(MultipartFile multipartFile) {
         String originalFilename = multipartFile.getOriginalFilename();
         String contentType = multipartFile.getContentType();
         InputStream inputStream = null;
+        ObjectId store = null;
         try {
             inputStream = multipartFile.getInputStream();
+            store = gridFsTemplate.store(inputStream, originalFilename, contentType);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        ObjectId store = gridFsTemplate.store(inputStream, originalFilename, contentType);
         return store.toString();
     }
 
     @Override
     public List<String> multiFileUpload(MultipartFile[] multipartFiles) {
-        List<String> objectIds = new ArrayList<>();
+        List<String> objectIds = new CopyOnWriteArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             String objectId = singleFileUpload(multipartFile);
             objectIds.add(objectId);
