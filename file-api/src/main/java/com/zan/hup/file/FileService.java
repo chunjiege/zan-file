@@ -19,7 +19,7 @@ public interface FileService {
     List<String> multiFileUpload(@RequestParam("files") MultipartFile[] multipartFiles);
 
     @GetMapping("/objectId")
-    FileDto getFileByObjectId(String objectId);
+    FileDto getFileByObjectId(@RequestParam("objectId") String objectId);
 
     @DeleteMapping
     void deleteFile(String objectId);
