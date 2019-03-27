@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,13 +42,13 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private AsyncTask asyncTask;
 
-    public String singleFileUpload(MultipartFile multipartFile) {
-        String originalFilename = multipartFile.getOriginalFilename();
-        String contentType = multipartFile.getContentType();
+    public String singleFileUpload(@RequestPart("file") MultipartFile file) {
+        String originalFilename = file.getOriginalFilename();
+        String contentType = file.getContentType();
         InputStream inputStream = null;
         ObjectId store = null;
         try {
-            inputStream = multipartFile.getInputStream();
+            inputStream = file.getInputStream();
             store = gridFsTemplate.store(inputStream, originalFilename, contentType);
 
         } catch (IOException e) {
@@ -56,9 +58,9 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<String> multiFileUpload(MultipartFile[] multipartFiles) {
+    public List<String> multiFileUpload(@RequestPart("files") MultipartFile[] files) {
         List<String> objectIds = new CopyOnWriteArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
+        for (MultipartFile multipartFile : files) {
             String objectId = singleFileUpload(multipartFile);
             objectIds.add(objectId);
         }
@@ -66,7 +68,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public FileDto getFileByObjectId(String objectId) {
+    public FileDto getFileByObjectId(@RequestParam("objectId") String objectId) {
         Query query = Query.query(Criteria.where("_id").is(objectId));
         GridFSFile gridFSFile = gridFsTemplate.findOne(query);
         String fileName = gridFSFile.getFilename().replace(",", "");
@@ -89,7 +91,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public ResponseEntity download(String objectId) {
+    public ResponseEntity download(@RequestParam("objectId") String objectId) {
         FileDto file = getFileByObjectId(objectId);
         InputStreamResource inputStreamResource = new InputStreamResource(file.getContent());
         return ResponseEntity.ok()
@@ -101,7 +103,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public ResponseEntity preview(String objectId) {
+    public ResponseEntity preview(@RequestParam("objectId") String objectId) {
         FileDto file = getFileByObjectId(objectId);
         InputStreamResource inputStreamResource = new InputStreamResource(file.getContent());
         return ResponseEntity.ok()

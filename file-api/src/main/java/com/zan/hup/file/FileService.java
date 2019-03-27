@@ -11,7 +11,7 @@ import java.util.List;
 @FeignClient(value = "file-server")
 public interface FileService {
 
-    @PostMapping("/api/file/upload")
+    @PostMapping(value = "/api/file/upload")
     String singleFileUpload(@RequestPart("file") MultipartFile file);
 
     @PostMapping("/api/file/uploads")
