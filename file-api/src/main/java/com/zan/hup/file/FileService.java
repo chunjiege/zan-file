@@ -9,24 +9,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @FeignClient(value = "file-server")
-@RequestMapping("/api/file")
 public interface FileService {
 
-    @PostMapping("/upload")
-    String singleFileUpload(@RequestParam("file") MultipartFile multipartFile);
+    @PostMapping("/api/file/upload")
+    String singleFileUpload(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/uploads")
-    List<String> multiFileUpload(@RequestParam("files") MultipartFile[] multipartFiles);
+    @PostMapping("/api/file/uploads")
+    List<String> multiFileUpload(@RequestPart("files") MultipartFile[] files);
 
-    @GetMapping("/objectId")
+    @GetMapping("/api/file/objectId")
     FileDto getFileByObjectId(@RequestParam("objectId") String objectId);
 
-    @DeleteMapping
+    @DeleteMapping("/api/file")
     void deleteFile(String objectId);
 
-    @GetMapping("/download")
+    @GetMapping("/api/file/download")
     ResponseEntity download(@RequestParam("objectId") String objectId);
 
-    @GetMapping("/preview")
+    @GetMapping("/api/file/preview")
     ResponseEntity preview(@RequestParam("objectId") String objectId);
 }
