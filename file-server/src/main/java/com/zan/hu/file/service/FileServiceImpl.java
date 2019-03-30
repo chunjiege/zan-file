@@ -1,11 +1,10 @@
-package com.zan.hup.file.service;
+package com.zan.hu.file.service;
 
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.model.GridFSFile;
-import com.zan.hup.file.FileService;
-import com.zan.hup.file.async.AsyncTask;
-import com.zan.hup.file.dto.FileDto;
-import com.zan.hup.file.repository.FileRepository;
+import com.zan.hu.file.FileService;
+import com.zan.hu.file.async.AsyncTask;
+import com.zan.hu.file.dto.FileDto;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -15,8 +14,6 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,12 +34,10 @@ public class FileServiceImpl implements FileService {
     private GridFSBucket gridFSBucket;
 
     @Autowired
-    private FileRepository fileRepository;
-
-    @Autowired
     private AsyncTask asyncTask;
 
-    public String singleFileUpload(@RequestPart("file") MultipartFile file) {
+    @Override
+    public String singleUpload(MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
         String contentType = file.getContentType();
         InputStream inputStream = null;
@@ -50,25 +45,25 @@ public class FileServiceImpl implements FileService {
         try {
             inputStream = file.getInputStream();
             store = gridFsTemplate.store(inputStream, originalFilename, contentType);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        asyncTask.create(file, store.toString());
         return store.toString();
     }
 
     @Override
-    public List<String> multiFileUpload(@RequestPart("files") MultipartFile[] files) {
+    public List<String> multiUpload(MultipartFile[] files) {
         List<String> objectIds = new CopyOnWriteArrayList<>();
         for (MultipartFile multipartFile : files) {
-            String objectId = singleFileUpload(multipartFile);
+            String objectId = singleUpload(multipartFile);
             objectIds.add(objectId);
         }
         return objectIds;
     }
 
     @Override
-    public FileDto getFileByObjectId(@RequestParam("objectId") String objectId) {
+    public FileDto getByObjectId(String objectId) {
         Query query = Query.query(Criteria.where("_id").is(objectId));
         GridFSFile gridFSFile = gridFsTemplate.findOne(query);
         String fileName = gridFSFile.getFilename().replace(",", "");
@@ -86,13 +81,20 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteFile(String objectId) {
-        fileRepository.deleteById(objectId);
+    public void delete(String objectId) {
+        Query query = Query.query(Criteria.where("_id").is(objectId));
+        gridFsTemplate.delete(query);
     }
 
     @Override
-    public ResponseEntity download(@RequestParam("objectId") String objectId) {
-        FileDto file = getFileByObjectId(objectId);
+    public void batchDelete(List<String> objectIds) {
+        Query query = Query.query(Criteria.where("_id").in(objectIds));
+        gridFsTemplate.delete(query);
+    }
+
+    @Override
+    public ResponseEntity download(String objectId) {
+        FileDto file = getByObjectId(objectId);
         InputStreamResource inputStreamResource = new InputStreamResource(file.getContent());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -103,8 +105,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public ResponseEntity preview(@RequestParam("objectId") String objectId) {
-        FileDto file = getFileByObjectId(objectId);
+    public ResponseEntity preview(String objectId) {
+        FileDto file = getByObjectId(objectId);
         InputStreamResource inputStreamResource = new InputStreamResource(file.getContent());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, file.getContentType())

@@ -1,4 +1,4 @@
-package com.zan.hup.file;
+package com.zan.hu.file;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringCloudApplication
 @EnableAsync
 @EnableFeignClients
-@MapperScan("com.zan.hup.file.dao")
+@MapperScan("com.zan.hu.file.dao")
 public class FileApplication {
 
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zan.hup.file.dao.ImageMapper">
-  <resultMap id="BaseResultMap" type="com.zan.hup.file.domin.Image">
+<mapper namespace="com.zan.hu.file.dao.ImageMapper">
+  <resultMap id="BaseResultMap" type="com.zan.hu.file.domin.Image">
     <!--
       WARNING - @mbg.generated
     -->

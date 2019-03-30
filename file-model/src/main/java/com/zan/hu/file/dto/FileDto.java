@@ -1,12 +1,13 @@
-package com.zan.hup.file.dto;
+package com.zan.hu.file.dto;
 
 import lombok.Data;
 
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class FileDto {
+public class FileDto implements Serializable {
 
     /**
      * 文件名称

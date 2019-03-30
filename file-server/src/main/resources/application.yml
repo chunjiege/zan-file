@@ -5,9 +5,19 @@ spring:
     mongodb:
       host:
       uri: mongodb://118.31.20.148:27017/storage
+#mysql db
   datasource:
     username: root
     password: 123456
     url: jdbc:mysql://118.31.20.148:3306/juhai?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+#log
+logging:
+  level:
+    com:
+     zan:
+      hu: debug

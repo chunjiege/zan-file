@@ -1,4 +1,4 @@
-package com.zan.hup.file.config;
+package com.zan.hu.file.config;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;

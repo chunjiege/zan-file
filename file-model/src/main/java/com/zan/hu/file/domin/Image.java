@@ -1,4 +1,4 @@
-package com.zan.hup.file.domin;
+package com.zan.hu.file.domin;
 
 import java.io.Serializable;
 import java.util.Date;
