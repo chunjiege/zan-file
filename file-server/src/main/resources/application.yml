@@ -5,7 +5,7 @@ spring:
     mongodb:
       host:
       uri: mongodb://118.31.20.148:27017/storage
-#mysql db
+  #mysql db
   datasource:
     username: root
     password: 123456
@@ -19,3 +19,4 @@ mybatis:
 logging:
   level:
     com.zan.hu: debug
+
