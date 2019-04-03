@@ -15,10 +15,6 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
-security:
-  jwt:
-    public-key: classpath:public.cert
-
 #log
 logging:
   level:
