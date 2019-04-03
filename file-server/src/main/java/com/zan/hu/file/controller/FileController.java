@@ -3,6 +3,7 @@ package com.zan.hu.file.controller;
 import com.zan.hu.file.FileService;
 import com.zan.hu.file.dto.FileDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +30,7 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @PostMapping(value = "/upload")
+    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String singleUpload(@RequestPart(value = "file") MultipartFile file) {
         Assert.notNull(file, "file must not null");
         return fileService.singleUpload(file);
