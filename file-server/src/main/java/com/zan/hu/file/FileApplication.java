@@ -7,9 +7,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringCloudApplication
 @EnableAsync
-@MapperScan("com.zan.hu.file.dao")
+@MapperScan("com.zan.hu.file.mapper")
 public class FileApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(FileApplication.class, args);
     }

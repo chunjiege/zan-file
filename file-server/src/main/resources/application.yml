@@ -18,6 +18,4 @@ mybatis:
 #log
 logging:
   level:
-    com:
-     zan:
-      hu: debug
+    com.zan.hu: debug

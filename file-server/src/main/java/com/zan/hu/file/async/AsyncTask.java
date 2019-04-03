@@ -1,6 +1,6 @@
 package com.zan.hu.file.async;
 
-import com.zan.hu.file.dao.ImageMapper;
+import com.zan.hu.file.mapper.ImageMapper;
 import com.zan.hu.file.domin.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
