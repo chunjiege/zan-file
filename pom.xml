@@ -10,7 +10,7 @@
 
     <modules>
         <module>file-api</module>
-        <module>file-server</module>
+        <module>file-core</module>
         <module>file-model</module>
     </modules>
 
@@ -51,7 +51,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.zan.hup</groupId>
-                <artifactId>common-bom</artifactId>
+                <artifactId>zan-bom</artifactId>
                 <version>${project.version}</version>
                 <scope>import</scope>
                 <type>pom</type>

@@ -1,6 +1,7 @@
 package com.zan.hu.file;
 
-import com.zan.hu.file.dto.FileDto;
+import com.zan.hu.file.model.FileDto;
+import com.zan.hu.file.model.request.FileUploadRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,12 @@ public interface FileService {
      * @return
      */
     List<String> multiUpload(MultipartFile[] files);
+
+
+    String singleUpload(FileUploadRequest fileUploadRequest);
+
+    List<String> multiUpload(List<FileUploadRequest> fileUploadRequests);
+
 
     /**
      * create a {@link FileDto} instance
