@@ -1,5 +1,6 @@
 package com.zan.hu.file.config;
 
+import com.zan.hu.jwt.ResourceServerConf;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
@@ -11,11 +12,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  **/
 @Configuration
 @EnableResourceServer
-public class ResourceServerConf extends com.zan.hu.jwt.ResourceServerConf {
+public class ResourceConf extends ResourceServerConf {
 
     private static final String RESOURCE_ID = "file-server";
 
-    @Override
     public String resourceId() {
         return RESOURCE_ID;
     }
